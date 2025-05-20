@@ -1,33 +1,19 @@
 import { Button, Layout, Menu, theme } from "antd";
-import { useEffect, useState } from "react";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
+import { useState } from "react";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Link, Outlet } from "react-router";
-import { GrTest } from "react-icons/gr";
-import { BiHome } from "react-icons/bi";
-import { TbBrandStocktwits } from "react-icons/tb";
-
-const menu = [
-  {
-    icon: <BiHome />,
-    label: <Link to={"/home"}>Home</Link>,
-  },
-  {
-    label: <Link to={"/backtest"}>Backtest</Link>,
-    icon: <GrTest />,
-  },
-  {
-    label: <Link to={"/predict"}>Predict</Link>,
-    icon: <TbBrandStocktwits />,
-  },
-];
+import { routes } from "../configs/routes";
 
 export const LayoutRoot: React.FC = () => {
+  const menu = (routes?.routes[0].children as any[])?.map(
+    (e: any, index: number) => ({
+      // ...e,
+      key: index,
+      icon: e.handle?.icon,
+      label: <Link to={e.path}>{e.handle?.title}</Link>,
+    })
+  );
+
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useState(false);
   const {
@@ -40,7 +26,6 @@ export const LayoutRoot: React.FC = () => {
         <Menu
           theme="dark"
           mode="inline"
-
           items={menu.map((item, index) => ({
             ...item,
             key: index,
